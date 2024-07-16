@@ -8,9 +8,8 @@ const ctx = canvas.getContext("2d")!;
 const gridSize = 8;
 const cellSize = canvas.width / gridSize;
 
-const isPositiveSine =
-  Math.sin((Number(angleInput.value) * Math.PI) / 180) >= 0;
-const isPositiveCosine =
+let isPositiveSine = Math.sin((Number(angleInput.value) * Math.PI) / 180) >= 0;
+let isPositiveCosine =
   Math.cos((Number(angleInput.value) * Math.PI) / 180) >= 0;
 
 /**
@@ -176,18 +175,74 @@ const fallBall = () => {
   balls.push({ x, y });
 };
 
+const changeSystemSetting = (angle: number) => {
+  angleInput.value = String(angle);
+  canvas.style.transform = `rotate(${angle}deg)`;
+
+  isPositiveSine = Math.sin((Number(angle) * Math.PI) / 180) >= 0;
+  isPositiveCosine = Math.cos((Number(angle) * Math.PI) / 180) >= 0;
+};
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const angle = angleInput.value;
-  canvas.style.transform = `rotate(${angle}deg)`;
-  // angleInput.value = angle;
+
+  changeSystemSetting(Number(angle));
+});
+
+const change_1 = document.getElementById("change_1") as HTMLButtonElement;
+const change_2 = document.getElementById("change_2") as HTMLButtonElement;
+const change_3 = document.getElementById("change_3") as HTMLButtonElement;
+const change_4 = document.getElementById("change_4") as HTMLButtonElement;
+
+change_1.addEventListener("click", () => {
+  changeSystemSetting(-135);
+});
+change_2.addEventListener("click", () => {
+  changeSystemSetting(-45);
+});
+change_3.addEventListener("click", () => {
+  changeSystemSetting(45);
+});
+change_4.addEventListener("click", () => {
+  changeSystemSetting(135);
+});
+
+let isRotating = false;
+
+const rotate = document.getElementById("rotate") as HTMLButtonElement;
+
+let intervalId: number;
+
+const audioPlayer = document.getElementById("audioPlayer") as HTMLAudioElement;
+
+audioPlayer.volume = 0.5;
+
+rotate.addEventListener("click", () => {
+  console.log(intervalId);
+  if (!intervalId) {
+    audioPlayer.play();
+    intervalId = setInterval(() => {
+      changeSystemSetting(Number(angleInput.value) + 1);
+    }, 10);
+  } else {
+    audioPlayer.pause();
+    clearInterval(intervalId);
+    intervalId = 0;
+  }
+  console.log(intervalId);
+});
+
+audioPlayer.addEventListener("ended", () => {
+  audioPlayer.currentTime = 0;
+  audioPlayer.play();
 });
 
 const main = async () => {
   let time = 200;
   canvas.style.transform = `rotate(${angleInput.value}deg)`;
   canvas.style.transition = `${time / 1000}s`;
-  for (let i = 0; i < gridSize ** 2; i++) {
+  for (let i = 0; i < 32; i++) {
     await timeAsync(time, fallBall);
   }
 };
