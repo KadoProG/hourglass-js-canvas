@@ -208,8 +208,6 @@ change_4.addEventListener("click", () => {
   changeSystemSetting(135);
 });
 
-let isRotating = false;
-
 const rotate = document.getElementById("rotate") as HTMLButtonElement;
 
 let intervalId: number;
