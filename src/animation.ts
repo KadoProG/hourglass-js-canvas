@@ -1,12 +1,12 @@
 import { balls, renderBall } from "./ball";
 import { drawGrid, gridSize } from "./grid";
 import { canvasContainerElement } from "./main";
-import { timeAsync } from "./utils";
 
 const angleInput = document.getElementById("angleInput") as HTMLInputElement;
 
-let isPositiveSine = Math.sin((Number(angleInput.value) * Math.PI) / 180) >= 0;
-let isPositiveCosine =
+export let isPositiveSine =
+  Math.sin((Number(angleInput.value) * Math.PI) / 180) >= 0;
+export let isPositiveCosine =
   Math.cos((Number(angleInput.value) * Math.PI) / 180) >= 0;
 
 export const animationRoutine = (
@@ -74,15 +74,7 @@ export const animationRoutine = (
     ball.y = y;
     renderBall(canvasElement, x, y, index);
   });
-  setTimeout(() => animationRoutine(canvasElement, canvasIndex), 50);
-};
-
-export const fallBall = async (time: number, canvasIndex: number) => {
-  const x = isPositiveSine ? 0 : gridSize - 1;
-  const y = isPositiveCosine ? 0 : gridSize - 1;
-
-  balls[canvasIndex].push({ x, y });
-  await timeAsync(time, () => {});
+  setTimeout(() => animationRoutine(canvasElement, canvasIndex), 100);
 };
 
 export const changeAngle = (angle: number, isEnabledAnimation?: boolean) => {

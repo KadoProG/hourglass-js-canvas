@@ -1,6 +1,7 @@
 import "./style.scss";
-import { animationRoutine, changeAngle, fallBall } from "./animation";
+import { animationRoutine, changeAngle } from "./animation";
 import { settingCanvasInit } from "./canvas";
+import { fallBall } from "./ball";
 
 export const canvasElements: HTMLCanvasElement[] = [
   document.getElementById("myCanvas0") as HTMLCanvasElement,
@@ -68,7 +69,7 @@ audioPlayer.addEventListener("ended", () => {
 window.addEventListener("resize", settingCanvasInit);
 
 const main = async () => {
-  const time = 200; // ボール挿入の間隔
+  const time = 1; // ボール挿入の間隔
 
   // 設定関連の初期化
   changeAngle(45);
@@ -78,11 +79,8 @@ const main = async () => {
   animationRoutine(canvasElements[0], 0);
   animationRoutine(canvasElements[1], 1);
 
-  for (let i = 0; i < 32; i++) {
+  for (let i = 0; i < 60; i++) {
     await fallBall(time, 0);
-  }
-  for (let i = 0; i < 16; i++) {
-    await fallBall(time, 1);
   }
 };
 
