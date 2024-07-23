@@ -1,5 +1,9 @@
 import "./style.scss";
-import { animationRoutine, changeAngle } from "./animation";
+import {
+  animationRoutine,
+  animationThrouthCanvasRoutine,
+  changeAngle,
+} from "./animation";
 import { settingCanvasInit } from "./canvas";
 import { fallBall } from "./ball";
 
@@ -70,6 +74,7 @@ window.addEventListener("resize", settingCanvasInit);
 
 const main = async () => {
   const time = 1; // ボール挿入の間隔
+  const ballLength = 60; // ボールの数
 
   // 設定関連の初期化
   changeAngle(45);
@@ -79,9 +84,12 @@ const main = async () => {
   animationRoutine(canvasElements[0], 0);
   animationRoutine(canvasElements[1], 1);
 
-  for (let i = 0; i < 60; i++) {
-    await fallBall(time, 0);
+  for (let i = 0; i < ballLength; i++) {
+    setTimeout(() => fallBall(0), i * time);
   }
+  setTimeout(() => {
+    animationThrouthCanvasRoutine();
+  }, ballLength * time + 3000);
 };
 
 main();

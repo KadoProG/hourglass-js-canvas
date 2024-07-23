@@ -1,4 +1,4 @@
-import { balls, renderBall } from "./ball";
+import { balls, fallBallThrouthCanvas, renderBall } from "./ball";
 import { drawGrid, gridSize } from "./grid";
 import { canvasContainerElement } from "./main";
 
@@ -75,6 +75,11 @@ export const animationRoutine = (
     renderBall(canvasElement, x, y, index);
   });
   setTimeout(() => animationRoutine(canvasElement, canvasIndex), 100);
+};
+
+export const animationThrouthCanvasRoutine = () => {
+  fallBallThrouthCanvas();
+  setTimeout(animationThrouthCanvasRoutine, 1000);
 };
 
 export const changeAngle = (angle: number, isEnabledAnimation?: boolean) => {

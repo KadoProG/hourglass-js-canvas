@@ -1,7 +1,6 @@
 import { isPositiveCosine, isPositiveSine } from "./animation";
 import { gridSize } from "./grid";
 import { angleInput } from "./main";
-import { timeAsync } from "./utils";
 
 export const balls: { x: number; y: number }[][] = [[], []];
 
@@ -35,12 +34,11 @@ export const renderBall = (
   );
 };
 
-export const fallBall = async (time: number, canvasIndex: number) => {
+export const fallBall = (canvasIndex: number) => {
   const x = isPositiveSine ? 0 : gridSize - 1;
   const y = isPositiveCosine ? 0 : gridSize - 1;
 
   balls[canvasIndex].push({ x, y });
-  await timeAsync(time, () => {});
 };
 
 export const removeBall = (canvasIndex: number): boolean => {
@@ -55,7 +53,7 @@ export const removeBall = (canvasIndex: number): boolean => {
   return true;
 };
 
-export const fallBallThrouthCanvas = async (time: number) => {
+export const fallBallThrouthCanvas = () => {
   // canvasが横向きの場合はtanθが負になるので、その場合は処理を終了する
   if (Math.tan(Number(angleInput.value)) < 0) return;
 
@@ -64,6 +62,6 @@ export const fallBallThrouthCanvas = async (time: number) => {
 
   if (result) {
     // ボールが正常に削除された場合は、ボールを落とす
-    await fallBall(time, isPositiveSine ? 1 : 0);
+    fallBall(isPositiveSine ? 1 : 0);
   }
 };
