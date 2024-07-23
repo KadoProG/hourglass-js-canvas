@@ -2,16 +2,18 @@ import { balls, renderBall } from "./ball";
 import { drawGrid, gridSize } from "./grid";
 import { timeAsync } from "./utils";
 
-const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 const angleInput = document.getElementById("angleInput") as HTMLInputElement;
 
 let isPositiveSine = Math.sin((Number(angleInput.value) * Math.PI) / 180) >= 0;
 let isPositiveCosine =
   Math.cos((Number(angleInput.value) * Math.PI) / 180) >= 0;
 
-export const animationRoutine = () => {
-  drawGrid();
-  balls.forEach((ball, index) => {
+export const animationRoutine = (
+  canvasElement: HTMLCanvasElement,
+  canvasIndex: number
+) => {
+  drawGrid(canvasElement);
+  balls[canvasIndex].forEach((ball, index) => {
     let x = ball.x + (isPositiveSine ? 1 : -1);
     let y = ball.y + (isPositiveCosine ? 1 : -1);
 
@@ -40,10 +42,10 @@ export const animationRoutine = () => {
     if (isRightEnd && isBottomEnd) {
       ball.x = x;
       ball.y = y;
-      return renderBall(x, y, index);
+      return renderBall(canvasElement, x, y, index);
     }
 
-    balls.forEach((b, index2) => {
+    balls[canvasIndex].forEach((b, index2) => {
       if (index === index2) return;
       if (b.x === x && b.y === y) {
         isBottomEmpty = false;
@@ -69,22 +71,26 @@ export const animationRoutine = () => {
 
     ball.x = x;
     ball.y = y;
-    renderBall(x, y, index);
+    renderBall(canvasElement, x, y, index);
   });
-  setTimeout(animationRoutine, 50);
+  setTimeout(() => animationRoutine(canvasElement, canvasIndex), 50);
 };
 
-export const fallBall = async (time: number) => {
+export const fallBall = async (time: number, canvasIndex: number) => {
   const x = isPositiveSine ? 0 : gridSize - 1;
   const y = isPositiveCosine ? 0 : gridSize - 1;
 
-  balls.push({ x, y });
+  balls[canvasIndex].push({ x, y });
   await timeAsync(time, () => {});
 };
 
-export const changeSystemSetting = (angle: number) => {
+export const changeSystemSetting = (
+  canvasElement: HTMLElement,
+  angle: number
+) => {
   angleInput.value = String(angle);
-  canvas.style.transform = `rotate(${angle}deg)`;
+  const size = ((Math.sqrt(2) - 1) * canvasElement.offsetWidth) / 2;
+  canvasElement.style.transform = `translate(${size}px, ${size}px) rotate(${angleInput.value}deg)`;
 
   isPositiveSine = Math.sin((Number(angle) * Math.PI) / 180) >= 0;
   isPositiveCosine = Math.cos((Number(angle) * Math.PI) / 180) >= 0;

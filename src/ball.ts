@@ -1,10 +1,13 @@
-const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
-const ctx = canvas.getContext("2d")!;
-const cellSize = canvas.width / 8;
+export const balls: { x: number; y: number }[][] = [[], []];
 
-export const balls: { x: number; y: number }[] = [];
-
-export const renderBall = (x: number, y: number, num: number) => {
+export const renderBall = (
+  canvasElement: HTMLCanvasElement,
+  x: number,
+  y: number,
+  num: number
+) => {
+  const ctx = canvasElement.getContext("2d")!;
+  const cellSize = canvasElement.width / 8;
   ctx.fillStyle = "red";
   ctx.beginPath();
   ctx.arc(
