@@ -1,10 +1,15 @@
-import { angleInput, canvasContainerElement, canvasElements } from "./main";
+import {
+  angleInput,
+  canvasContainerElement,
+  canvasElements,
+  formContainerElement,
+} from "./main";
 
 export const settingCanvasInit = () => {
   const minCanvasSize =
-    window.innerWidth < window.innerHeight
+    window.innerWidth < window.innerHeight - formContainerElement.offsetHeight
       ? window.innerWidth / Math.sqrt(2)
-      : window.innerHeight / Math.sqrt(2);
+      : window.innerHeight / Math.sqrt(2) - formContainerElement.offsetHeight;
 
   canvasElements.forEach((canvasElement) => {
     canvasElement.width = minCanvasSize / 2;

@@ -12,6 +12,10 @@ export const canvasElements: HTMLCanvasElement[] = [
   document.getElementById("myCanvas1") as HTMLCanvasElement,
 ];
 
+export const formContainerElement = document.getElementById(
+  "formContainer"
+) as HTMLDivElement;
+
 export const canvasContainerElement = document.getElementById(
   "canvasContainer"
 ) as HTMLDivElement;
