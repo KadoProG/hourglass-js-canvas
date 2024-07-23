@@ -1,5 +1,6 @@
 import { balls, renderBall } from "./ball";
 import { drawGrid, gridSize } from "./grid";
+import { canvasContainerElement } from "./main";
 import { timeAsync } from "./utils";
 
 const angleInput = document.getElementById("angleInput") as HTMLInputElement;
@@ -84,13 +85,13 @@ export const fallBall = async (time: number, canvasIndex: number) => {
   await timeAsync(time, () => {});
 };
 
-export const changeSystemSetting = (
-  canvasElement: HTMLElement,
-  angle: number
-) => {
+export const changeAngle = (angle: number, isEnabledAnimation?: boolean) => {
   angleInput.value = String(angle);
-  const size = ((Math.sqrt(2) - 1) * canvasElement.offsetWidth) / 2;
-  canvasElement.style.transform = `translate(${size}px, ${size}px) rotate(${angleInput.value}deg)`;
+  const size = ((Math.sqrt(2) - 1) * canvasContainerElement.offsetWidth) / 2;
+  canvasContainerElement.style.transform = `translate(${size}px, ${size}px) rotate(${angleInput.value}deg)`;
+  canvasContainerElement.style.transition = isEnabledAnimation
+    ? `0.5s`
+    : `none`;
 
   isPositiveSine = Math.sin((Number(angle) * Math.PI) / 180) >= 0;
   isPositiveCosine = Math.cos((Number(angle) * Math.PI) / 180) >= 0;

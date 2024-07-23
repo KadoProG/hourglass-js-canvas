@@ -6,26 +6,31 @@ export const drawGrid = (canvasElement: HTMLCanvasElement) => {
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
-  ctx.strokeStyle = "black";
+  ctx.strokeStyle = "#ddd";
   for (let i = 0; i <= gridSize; i++) {
+    // 縦線の描写
     ctx.beginPath();
     ctx.moveTo(i * cellSize, 0);
     ctx.lineTo(i * cellSize, canvasElement.height);
     ctx.stroke();
 
+    // 横線の描写
     ctx.beginPath();
     ctx.moveTo(0, i * cellSize);
     ctx.lineTo(canvasElement.width, i * cellSize);
     ctx.stroke();
   }
 
-  ctx.fillStyle = "black";
-  ctx.font = "12px Arial";
+  // 中の座標文字の描写
+  ctx.fillStyle = "gray";
+  ctx.font = `${cellSize / 4}px Arial`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
   for (let row = 0; row < gridSize; row++) {
     for (let col = 0; col < gridSize; col++) {
       const x = col * cellSize + cellSize / 2;
       const y = row * cellSize + cellSize / 2;
-      ctx.fillText(`[${col}, ${row}]`, x - 10, y + 10);
+      ctx.fillText(`[${col}, ${row}]`, x, y);
     }
   }
 };

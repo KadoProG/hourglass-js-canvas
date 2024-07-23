@@ -1,16 +1,19 @@
 import "./style.scss";
-import { animationRoutine, fallBall, changeSystemSetting } from "./animation";
+import { animationRoutine, changeAngle, fallBall } from "./animation";
+import { settingCanvasInit } from "./canvas";
 
-const canvasElements: HTMLCanvasElement[] = [
+export const canvasElements: HTMLCanvasElement[] = [
   document.getElementById("myCanvas0") as HTMLCanvasElement,
   document.getElementById("myCanvas1") as HTMLCanvasElement,
 ];
 
-const canvasContainerElement = document.getElementById(
+export const canvasContainerElement = document.getElementById(
   "canvasContainer"
 ) as HTMLDivElement;
 
-const angleInput = document.getElementById("angleInput") as HTMLInputElement;
+export const angleInput = document.getElementById(
+  "angleInput"
+) as HTMLInputElement;
 const form = document.getElementById("form") as HTMLFormElement;
 const rotateButtonElement = document.getElementById(
   "rotate"
@@ -27,14 +30,14 @@ audioPlayer.volume = 0.5;
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const angle = Number(angleInput.value);
-  changeSystemSetting(canvasContainerElement, angle);
+  changeAngle(angle, true);
 });
 
 ["change_1", "change_2", "change_3", "change_4"].forEach((id, idx) => {
   const button = document.getElementById(id) as HTMLButtonElement;
   button.addEventListener("click", () => {
     canvasContainerElement.style.transition = `0.5s`;
-    changeSystemSetting(canvasContainerElement, [-135, -45, 45, 135][idx]);
+    changeAngle([-135, -45, 45, 135][idx], true);
   });
 });
 
@@ -45,7 +48,7 @@ rotateButtonElement.addEventListener("click", () => {
     rotateButtonElement.textContent = "回転ストップ";
     intervalId = setInterval(() => {
       canvasContainerElement.style.transition = `none`;
-      changeSystemSetting(canvasContainerElement, Number(angleInput.value) + 1);
+      changeAngle(Number(angleInput.value) + 1);
     }, 10);
   } else {
     audioPlayer.pause();
@@ -61,14 +64,15 @@ audioPlayer.addEventListener("ended", () => {
   audioPlayer.play();
 });
 
+// 画面がリサイズされたときの処理
+window.addEventListener("resize", settingCanvasInit);
+
 const main = async () => {
   const time = 200; // ボール挿入の間隔
-  // 角度の初期化
-  changeSystemSetting(canvasContainerElement, 45);
 
-  setTimeout(() => {
-    canvasContainerElement.style.transition = `0.5s`;
-  }, 0);
+  // 設定関連の初期化
+  changeAngle(45);
+  settingCanvasInit();
 
   // アニメーションループの開始
   animationRoutine(canvasElements[0], 0);
