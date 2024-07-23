@@ -6,6 +6,7 @@
 
 - 主に animationRoutine で行う
 - かつ、animationRoutine からボール１個１個のレンダリング関数（renderBall）を呼び出している
+- 全てのボールの座標を格納している変数は balls である
 
 ## ボールのレンダリングプログラム
 
