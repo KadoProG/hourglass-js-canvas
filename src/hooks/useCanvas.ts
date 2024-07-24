@@ -1,6 +1,10 @@
 import React from "react";
 import drawGrid from "../utils/drawGrid";
 
+const intervalBetweenFallTime = 200; // 玉を追加する間隔
+const animationFrameTime = 100; // 玉が1マス進む時間（フレームレート）
+const intervalBetweenFallThrouthTime = 1000; // 玉がキャンバスを通過して落下する間隔
+
 const useCanvas = () => {
   const angleInputRef = React.useRef<HTMLInputElement>(null);
   const canvas0Ref = React.useRef<HTMLCanvasElement>(null);
@@ -13,12 +17,7 @@ const useCanvas = () => {
   const [audioId, setAudioId] = React.useState<number>(0);
   const gridSizeRef = React.useRef<number>(8);
   const gridSizeElementRef = React.useRef<HTMLInputElement>(null);
-
-  const [gridSize, setGridSize] = React.useState<number>(8);
-
-  React.useEffect(() => {
-    gridSizeRef.current = gridSize;
-  }, [gridSize]);
+  const ballLengthInputRef = React.useRef<HTMLInputElement>(null);
 
   const ballsRef = React.useRef<{ x: number; y: number }[][]>([[], []]);
 
@@ -52,15 +51,28 @@ const useCanvas = () => {
     );
   };
 
-  const removeBall = (canvasIndex: number): boolean => {
+  const removeBall = (canvasIndex?: number): boolean => {
     const x = isPositiveSineRef.current ? gridSizeRef.current - 1 : 0;
     const y = isPositiveCosineRef.current ? gridSizeRef.current - 1 : 0;
-    const index = ballsRef.current[canvasIndex].findIndex(
-      (ball) => ball.x === x && ball.y === y
-    );
-    if (index === -1) return false;
-    ballsRef.current[canvasIndex].splice(index, 1);
-    return true;
+
+    if (canvasIndex !== undefined) {
+      const index = ballsRef.current[canvasIndex].findIndex(
+        (ball) => ball.x === x && ball.y === y
+      );
+      if (index === -1) return false;
+      ballsRef.current[canvasIndex].splice(index, 1);
+      return true;
+    } else {
+      if (ballsRef.current[0].length > 0) {
+        ballsRef.current[0].pop();
+        return true;
+      } else if (ballsRef.current[1].length > 0) {
+        ballsRef.current[1].pop();
+        return true;
+      } else {
+        return false;
+      }
+    }
   };
 
   const fallBallThrouthCanvas = () => {
@@ -191,12 +203,15 @@ const useCanvas = () => {
       ball.y = y;
       renderBall(canvasElement, x, y, index);
     });
-    setTimeout(() => animationRoutine(canvasElement, canvasIndex), 100);
+    setTimeout(
+      () => animationRoutine(canvasElement, canvasIndex),
+      animationFrameTime
+    );
   };
 
   const animationThrouthCanvasRoutine = () => {
     fallBallThrouthCanvas();
-    setTimeout(animationThrouthCanvasRoutine, 1000);
+    setTimeout(animationThrouthCanvasRoutine, intervalBetweenFallThrouthTime);
   };
 
   const audioPlayButtonClick = () => {
@@ -223,10 +238,11 @@ const useCanvas = () => {
 
   React.useEffect(() => {
     const main = async () => {
-      const ballLength = 60;
+      const ballLength = Number(ballLengthInputRef.current?.value);
       if (audioElementRef.current) {
         audioElementRef.current.volume = 0.4;
       }
+
       const calculateMinCanvasSize = () => {
         if (formContainerRef.current) {
           return window.innerWidth <
@@ -253,14 +269,13 @@ const useCanvas = () => {
         animationRoutine(canvas1Ref.current, 1);
       }
 
-      const time = 100;
       for (let i = 0; i < ballLength; i++) {
-        setTimeout(() => fallBall(0), i * time);
+        setTimeout(() => fallBall(0), i * intervalBetweenFallTime);
       }
 
       setTimeout(() => {
         animationThrouthCanvasRoutine();
-      }, ballLength * time + 1000);
+      }, ballLength * intervalBetweenFallTime + animationFrameTime * gridSizeRef.current);
     };
 
     window.addEventListener("resize", () => {
@@ -290,10 +305,29 @@ const useCanvas = () => {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setGridSize(Number(gridSizeElementRef.current!.value));
     gridSizeRef.current = Number(gridSizeElementRef.current!.value);
     const angle = Number(angleInputRef.current!.value);
     changeAngle(angle, true);
+
+    if (gridSizeRef.current ** 2 < Number(ballLengthInputRef.current!.value)) {
+      ballLengthInputRef.current!.value = String(gridSizeRef.current ** 2);
+    }
+    const ballLength = Number(ballLengthInputRef.current!.value);
+
+    const preBallLength =
+      ballsRef.current[0].length + ballsRef.current[1].length;
+
+    if (preBallLength !== ballLength) {
+      for (let i = preBallLength; i < ballLength; i++) {
+        setTimeout(
+          () => fallBall(0),
+          (i - preBallLength) * intervalBetweenFallTime
+        );
+      }
+      for (let i = preBallLength - 1; i >= ballLength; i--) {
+        removeBall();
+      }
+    }
   };
 
   return {
@@ -308,6 +342,7 @@ const useCanvas = () => {
     canvas0Ref,
     canvas1Ref,
     audioElementRef,
+    ballLengthInputRef,
   };
 };
 

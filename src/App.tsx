@@ -17,6 +17,7 @@ const App: React.FC = () => {
     submitForm,
     canvas0Ref,
     canvas1Ref,
+    ballLengthInputRef,
   } = useCanvas();
 
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
         <AngleForm
           angleInputRef={angleInputRef}
           gridSizeElementRef={gridSizeElementRef}
+          ballLengthInputRef={ballLengthInputRef}
           submitForm={submitForm}
         />
         <ControlButtons
