@@ -2,36 +2,24 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hourglass with JavaScript Canvas</title>
+    <meta name="description" content="Hourglass with JavaScript Canvas" />
+    <meta name="keywords" content="Hourglass,JavaScript,Canvas" />
+    <meta name="author" content="KadoBloG" />
+    <meta name="og:description" content="Hourglass with JavaScript Canvas" />
+    <meta name="og:title" content="Hourglass with JavaScript Canvas" />
+    <meta name="og:type" content="website" />
+    <meta name="og:url" content="https://sub7.fast5-blog.com" />
+    <meta name="og:image" content="https://sub7.fast5-blog.com/icatch.png" />
+    <meta name="og:site_name" content="Hourglass with JavaScript Canvas" />
+    <meta name="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@KadoUniversity" />
   </head>
   <body>
-    <div id="formContainer">
-      <div>
-        <form id="form">
-          <label for="angleInput">角度</label>
-          <input type="number" value="45" id="angleInput" />
-          <button type="submit">送信</button>
-        </form>
-        <button id="change_1" class="button">-135</button>
-        <button id="change_2" class="button">-45</button>
-        <button id="change_3" class="button">45</button>
-        <button id="change_4" class="button">135</button>
-        <button id="rotate" class="button">回転スタート</button>
-        <label class="switch">
-          <input type="checkbox" />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <audio id="audioPlayer" controls style="display: none">
-        <source src="/cat-mean.m4a" type="audio/mp4" />
-        Your browser does not support the audio element.
-      </audio>
-    </div>
-    <div id="canvasContainer">
-      <canvas id="myCanvas0" width="300" height="300"></canvas>
-      <canvas id="myCanvas1" width="300" height="300"></canvas>
-    </div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

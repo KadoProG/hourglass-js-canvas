@@ -1,6 +1,4 @@
-export const gridSize = 8;
-
-export const drawGrid = (canvasElement: HTMLCanvasElement) => {
+const drawGrid = (canvasElement: HTMLCanvasElement, gridSize: number) => {
   const cellSize = canvasElement.width / gridSize;
   const ctx = canvasElement.getContext("2d")!;
   ctx.fillStyle = "white";
@@ -8,20 +6,17 @@ export const drawGrid = (canvasElement: HTMLCanvasElement) => {
 
   ctx.strokeStyle = "#ddd";
   for (let i = 0; i <= gridSize; i++) {
-    // 縦線の描写
     ctx.beginPath();
     ctx.moveTo(i * cellSize, 0);
     ctx.lineTo(i * cellSize, canvasElement.height);
     ctx.stroke();
 
-    // 横線の描写
     ctx.beginPath();
     ctx.moveTo(0, i * cellSize);
     ctx.lineTo(canvasElement.width, i * cellSize);
     ctx.stroke();
   }
 
-  // 中の座標文字の描写
   ctx.fillStyle = "gray";
   ctx.font = `${cellSize / 4}px Arial`;
   ctx.textAlign = "center";
@@ -34,3 +29,5 @@ export const drawGrid = (canvasElement: HTMLCanvasElement) => {
     }
   }
 };
+
+export default drawGrid;

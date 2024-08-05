@@ -40,6 +40,9 @@
   border: none;
   border-radius: 0.3em;
   cursor: pointer;
+  &.primary {
+    background: rgb(0, 74, 0);
+  }
 }
 
 #formContainer {
