@@ -9,19 +9,19 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: ssh key generate
-        run: |
-          echo "$SSH_PRIVATE_KEY" > key
-          chmod 600 key
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.MIXHOST_SECRET_KEY }} # GitHubに登録したmixhostへの秘密鍵を指定
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: install dependencies
+        run: npm ci
 
       - name: vite build
-        run: |
-          npm install
-          npm run build
+        run: npm run build
 
       - name: rsync deployments
         uses: burnett01/rsync-deployments@5.1

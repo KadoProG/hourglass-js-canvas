@@ -1,9 +1,9 @@
 import React, { RefObject, FormEvent } from "react";
 
 interface AngleFormProps {
-  angleInputRef: RefObject<HTMLInputElement>;
-  gridSizeElementRef: RefObject<HTMLInputElement>;
-  ballLengthInputRef: RefObject<HTMLInputElement>;
+  angleInputRef: RefObject<HTMLInputElement | null>;
+  gridSizeElementRef: RefObject<HTMLInputElement | null>;
+  ballLengthInputRef: RefObject<HTMLInputElement | null>;
   submitForm: (e: FormEvent<HTMLFormElement>) => void;
 }
 

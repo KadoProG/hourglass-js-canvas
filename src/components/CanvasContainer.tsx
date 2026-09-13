@@ -1,9 +1,9 @@
 import React, { RefObject } from "react";
 
 interface CanvasContainerProps {
-  canvasContainerRef: RefObject<HTMLDivElement>;
-  canvas0Ref: RefObject<HTMLCanvasElement>;
-  canvas1Ref: RefObject<HTMLCanvasElement>;
+  canvasContainerRef: RefObject<HTMLDivElement | null>;
+  canvas0Ref: RefObject<HTMLCanvasElement | null>;
+  canvas1Ref: RefObject<HTMLCanvasElement | null>;
 }
 
 const CanvasContainer: React.FC<CanvasContainerProps> = ({
