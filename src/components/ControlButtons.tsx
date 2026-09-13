@@ -4,7 +4,7 @@ interface ControlButtonsProps {
   angleButtonClick: (angle: number) => void;
   audioPlayButtonClick: () => void;
   audioId: number;
-  audioElementRef: React.RefObject<HTMLAudioElement>;
+  audioElementRef: React.RefObject<HTMLAudioElement | null>;
 }
 
 const ControlButtons: React.FC<ControlButtonsProps> = ({
