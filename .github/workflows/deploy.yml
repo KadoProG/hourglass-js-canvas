@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,7 +27,7 @@ jobs:
         run: npm run build
 
       - name: rsync deployments
-        uses: burnett01/rsync-deployments@5.1
+        uses: burnett01/rsync-deployments@b943ffe476f772c90f0199d1a180f068f0206e87 # 5.1
         with:
           switches: -avz --delete
           path: dist/
